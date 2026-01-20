@@ -1,0 +1,13 @@
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgUser{
+    background-color: black;
+    transition: 0.2s ease;
+    height: 250px;
+    width: 250px;
+}
+
