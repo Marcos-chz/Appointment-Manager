@@ -1,8 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "proyect/index.js",
   "scripts": {
+    "start": "node proyect/index.js",
+    "dev": "nodemon proyect/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
