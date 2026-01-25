@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "../../../styles/appointments.css";
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 export default function Appointments() {
   const [appointments, setAppointments] = useState([]);
   const [modalDelete, setModalDelete] = useState(false);
@@ -24,7 +26,7 @@ export default function Appointments() {
   const getAppointment = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/appointments?id=${userId}`,
+        `${API_URL}/appointments?id=${userId}`,
         {
           method: "GET",
           headers: authHeaders
@@ -51,7 +53,7 @@ export default function Appointments() {
   const deleteAppointment = async (a_id) => {
     try {
       const response = await fetch(
-        `http://localhost:4000/appointments/${a_id}`,
+        `${API_URL}/appointments/${a_id}`,
         {
           method: "DELETE",
           headers: authHeaders

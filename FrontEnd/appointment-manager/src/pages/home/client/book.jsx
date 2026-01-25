@@ -4,6 +4,8 @@ import { jwtDecode } from "jwt-decode";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 export default function Book() {
   const navigate = useNavigate();
 
@@ -34,9 +36,6 @@ export default function Book() {
     }));
   };
 
-  // =========================
-  // FETCH AVAILABILITY
-  // =========================
   useEffect(() => {
     const fetchAvailability = async () => {
       if (!formData.professional || !formData.date) {
@@ -47,7 +46,7 @@ export default function Book() {
 
       try {
         const res = await fetch(
-          `http://localhost:4000/availability/${formData.professional}/${formData.date}`,
+          `${API_URL}/availability/${formData.professional}/${formData.date}`,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -72,9 +71,6 @@ export default function Book() {
     }
   }, [formData.professional, formData.date]);
 
-  // =========================
-  // CREATE APPOINTMENT
-  // =========================
   const insertAppointment = async (e) => {
     e.preventDefault();
 
@@ -92,7 +88,7 @@ export default function Book() {
     };
 
     try {
-      const result = await fetch("http://localhost:4000/appointments", {
+      const result = await fetch(`${API_URL}/appointments`, {
         method: "POST",
         headers: authHeaders,
         body: JSON.stringify(dataToSend)
@@ -109,13 +105,10 @@ export default function Book() {
     }
   };
 
-  // =========================
-  // GET PROFESSIONALS
-  // =========================
   const getProfessionals = async () => {
     try {
       const result = await fetch(
-        "http://localhost:4000/user/professional",
+        `${API_URL}/user/professional`,
         {
           headers: {
             Authorization: `Bearer ${token}`

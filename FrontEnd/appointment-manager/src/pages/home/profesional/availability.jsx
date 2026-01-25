@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 export default function AvailabilityForm() {
   const [day, setDay] = useState("0");
   const [startTime, setStartTime] = useState("00:00");
@@ -8,7 +10,6 @@ export default function AvailabilityForm() {
   const [availability, setAvailability] = useState([]);
   const [error, setError] = useState("");
 
-  // Obtain current user id
   const token = localStorage.getItem("token");
   let userId = null;
 
@@ -37,7 +38,7 @@ export default function AvailabilityForm() {
 
     try {
       const response = await fetch(
-        "http://localhost:4000/availability/",
+        `${API_URL}/availability/`,
         {
           method: "POST",
           headers: authHeaders,
@@ -61,7 +62,7 @@ export default function AvailabilityForm() {
   const getAvailability = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/availability/${userId}`,
+        `${API_URL}/availability/${userId}`,
         {
           method: "GET",
           headers: authHeaders,

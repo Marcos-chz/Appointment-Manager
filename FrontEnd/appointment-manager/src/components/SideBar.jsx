@@ -3,6 +3,8 @@ import '../styles/sidebar.css'
 import { useEffect, useState } from "react"
 import { jwtDecode } from 'jwt-decode'
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 export default function Sidebar() {
   const [user, setUser] = useState({})
   const [pages, setPages] = useState([])
@@ -24,7 +26,7 @@ export default function Sidebar() {
   const getUser = async () => {
     try {
       const result = await fetch(
-        `http://localhost:4000/user?userId=${userId}`,
+        `${API_URL}/user?userId=${userId}`,
         { headers: authHeaders }
       )
 
@@ -42,7 +44,7 @@ export default function Sidebar() {
   const getPages = async () => {
     try {
       const result = await fetch(
-        `http://localhost:4000/pages?role=${role}`,
+        `${API_URL}/pages?role=${role}`,
         { headers: authHeaders }
       )
 
@@ -71,13 +73,13 @@ export default function Sidebar() {
           className="imgPerfil img-fluid rounded-circle"
           src={
             user.avatar
-              ? `http://localhost:4000/uploads/avatars/${user.avatar}`
-              : "http://localhost:4000/uploads/avatars/default.png"
+              ? `${API_URL}/uploads/avatars/${user.avatar}`
+              : `${API_URL}/uploads/avatars/default.png`
           }
           alt="user image"
           onError={(e) => {
             e.target.onerror = null
-            e.target.src = "http://localhost:4000/uploads/avatars/default.png"
+            e.target.src = `${API_URL}/uploads/avatars/default.png`
           }}
         />
         <p className="flex m-0">{user.name}</p>

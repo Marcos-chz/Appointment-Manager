@@ -7,6 +7,8 @@ import {
   logout
 } from "../../utils/auth";
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 export default function Profile() {
   const [user, setUser] = useState({});
   const [avatarVersion, setAvatarVersion] = useState(0);
@@ -45,7 +47,7 @@ export default function Profile() {
   const getUser = async () => {
     try {
       const result = await fetch(
-        `http://localhost:4000/user?userId=${userId}`,
+        `${API_URL}/user?userId=${userId}`,
         { headers: authHeaders }
       );
 
@@ -71,7 +73,7 @@ export default function Profile() {
 
     try {
       const result = await fetch(
-        `http://localhost:4000/user/avatar?userId=${userId}`,
+        `${API_URL}/user/avatar?userId=${userId}`,
         {
           method: "PUT",
           headers: authHeaders,
@@ -95,7 +97,7 @@ export default function Profile() {
   const getAppointment = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/appointments?id=${userId}`,
+        `${API_URL}/appointments?id=${userId}`,
         { headers: authHeaders }
       );
 
@@ -111,7 +113,7 @@ export default function Profile() {
   const getProfessionalAppointments = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/appointments/professional?id=${userId}`,
+        `${API_URL}/appointments/professional?id=${userId}`,
         { headers: authHeaders }
       );
 
@@ -149,13 +151,13 @@ export default function Profile() {
                 style={{ width: "120px", height: "120px", objectFit: "cover" }}
                 src={
                   user.avatar
-                    ? `http://localhost:4000/uploads/avatars/${user.avatar}?v=${avatarVersion}`
-                    : "http://localhost:4000/uploads/avatars/default.png"
+                    ? `${API_URL}/uploads/avatars/${user.avatar}?v=${avatarVersion}`
+                    : `${API_URL}/uploads/avatars/default.png`
                 }
                 alt="avatar"
                 onError={(e) => {
                   e.target.src =
-                    "http://localhost:4000/uploads/avatars/default.png";
+                    `${API_URL}/uploads/avatars/default.png`;
                 }}
               />
 

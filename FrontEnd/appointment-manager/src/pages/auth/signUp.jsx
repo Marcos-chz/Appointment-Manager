@@ -1,21 +1,16 @@
 import { useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000'
+
 export default function SignUp(){
-
-    // State of error
     const [ error, setError] = useState('')
-
-    // State of role
     const [params] = useSearchParams();
     const role = params.get("role");
-
-    // State of inputs
     const [name, setName] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
     const navigate = useNavigate()
 
     const insertUsers = (e) =>{
@@ -29,7 +24,7 @@ export default function SignUp(){
             role
         } 
 
-        fetch('http://localhost:4000/auth/signUp', {
+        fetch(`${API_URL}/auth/signUp`, {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify(newUser)
@@ -52,7 +47,6 @@ export default function SignUp(){
         .catch(error =>{
             setError(error.message)
         })
-
     }
 
     return (
@@ -126,5 +120,4 @@ export default function SignUp(){
         </div>
     </div>
     );
-
 }

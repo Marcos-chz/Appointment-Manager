@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import "../../../styles/appointments.css";
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 export default function AppointmentRequest() {
 
   const [appointments, setAppointments] = useState([]);
@@ -9,9 +11,6 @@ export default function AppointmentRequest() {
   const [appointmentId, setAppointmentId] = useState(null);
   const [statusToChange, setStatusToChange] = useState("");
 
-  // =========================
-  // AUTH
-  // =========================
   const token = localStorage.getItem("token");
   let userId = null;
 
@@ -29,13 +28,10 @@ export default function AppointmentRequest() {
     Authorization: `Bearer ${token}`
   };
 
-  // =========================
-  // FETCH APPOINTMENTS
-  // =========================
   const getProfessionalAppointments = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/appointments/professional?id=${userId}`,
+        `${API_URL}/appointments/professional?id=${userId}`,
         {
           method: "GET",
           headers: authHeaders
@@ -57,13 +53,10 @@ export default function AppointmentRequest() {
     }
   }, [userId]);
 
-  // =========================
-  // CHANGE STATUS
-  // =========================
   const changeStatus = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/appointments/${appointmentId}/status`,
+        `${API_URL}/appointments/${appointmentId}/status`,
         {
           method: "PUT",
           headers: authHeaders,
@@ -80,25 +73,16 @@ export default function AppointmentRequest() {
     }
   };
 
-  // =========================
-  // MODAL
-  // =========================
   const openModal = (id, status) => {
     setAppointmentId(id);
     setStatusToChange(status);
     setModal(true);
   };
 
-  // =========================
-  // FILTER
-  // =========================
   const visibleAppointments = appointments.filter(
     (app) => app.status !== "completed" && app.status !== "expired"
   );
 
-  // =========================
-  // RENDER
-  // =========================
   return (
     <div className="container py-4">
       <div className="row justify-content-center">
@@ -116,7 +100,6 @@ export default function AppointmentRequest() {
             <div className="card shadow-sm mb-3" key={app.id}>
               <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
 
-                {/* INFO */}
                 <div>
                   <h6 className="mb-1">{app.user_name}</h6>
                   <small className="text-muted">
@@ -125,7 +108,6 @@ export default function AppointmentRequest() {
                   </small>
                 </div>
 
-                {/* STATUS */}
                 <span
                   className={`badge ${
                     app.status === "pending"
@@ -138,7 +120,6 @@ export default function AppointmentRequest() {
                   {app.status}
                 </span>
 
-                {/* ACTIONS */}
                 {app.status === "pending" && (
                   <div className="d-flex gap-2">
                     <button
@@ -163,7 +144,6 @@ export default function AppointmentRequest() {
         </div>
       </div>
 
-      {/* MODAL */}
       {modal && (
         <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50">
           <div className="card p-4 text-center" style={{ maxWidth: "320px" }}>

@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 export default function Dashboard() {
   const [appointments, setAppointments] = useState([]);
   const [user, setUser] = useState({});
@@ -27,11 +29,10 @@ export default function Dashboard() {
     Authorization: `Bearer ${token}`
   };
 
-  // FETCH USER
   const getUser = async () => {
     try {
       const result = await fetch(
-        `http://localhost:4000/user?userId=${userId}`,
+        `${API_URL}/user?userId=${userId}`,
         { headers: authHeaders }
       );
 
@@ -44,12 +45,11 @@ export default function Dashboard() {
     }
   };
 
-  // FETCH APPOINTMENTS
   const getAppointments = async () => {
     try {
       const url = isProfessional
-        ? `http://localhost:4000/appointments/professional?id=${userId}`
-        : `http://localhost:4000/appointments?id=${userId}`;
+        ? `${API_URL}/appointments/professional?id=${userId}`
+        : `${API_URL}/appointments?id=${userId}`;
 
       const response = await fetch(url, { headers: authHeaders });
 
@@ -68,7 +68,6 @@ export default function Dashboard() {
     getAppointments();
   }, []);
 
-  // DATA
   const pendingAppointments = appointments.filter(
     (a) => a.status === "pending"
   );

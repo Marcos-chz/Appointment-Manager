@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 export default function Clients() {
   const [appointments, setAppointments] = useState([]);
   const [userId, setUserId] = useState(null);
 
-  // =========================
-  // AUTH
-  // =========================
   const token = localStorage.getItem("token");
 
   const authHeaders = {
@@ -26,13 +25,10 @@ export default function Clients() {
     }
   }, [token]);
 
-  // =========================
-  // FETCH APPOINTMENTS
-  // =========================
   const getProfessionalAppointments = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/appointments/professional?id=${userId}`,
+        `${API_URL}/appointments/professional?id=${userId}`,
         {
           method: "GET",
           headers: authHeaders,
@@ -56,9 +52,6 @@ export default function Clients() {
     }
   }, [userId]);
 
-  // =========================
-  // UNIQUE CLIENTS
-  // =========================
   const clients = Array.from(
     new Map(
       appointments.map((a) => [
@@ -73,9 +66,6 @@ export default function Clients() {
     ).values()
   );
 
-  // =========================
-  // RENDER
-  // =========================
   return (
     <div className="container-sm mt-4">
       <h3 className="mb-4 text-center">My Clients</h3>
@@ -102,8 +92,8 @@ export default function Clients() {
                         <img
                           src={
                             client.avatar
-                              ? `http://localhost:4000/uploads/avatars/${client.avatar}`
-                              : "http://localhost:4000/uploads/avatars/default.png"
+                              ? `${API_URL}/uploads/avatars/${client.avatar}`
+                              : `${API_URL}/uploads/avatars/default.png`
                           }
                           alt="client avatar"
                           width="38"
@@ -112,7 +102,7 @@ export default function Clients() {
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src =
-                              "http://localhost:4000/uploads/avatars/default.png";
+                              `${API_URL}/uploads/avatars/default.png`;
                           }}
                         />
                         <span className="fw-medium">

@@ -2,12 +2,12 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { jwtDecode } from "jwt-decode"
 
-export default function SignIn() {
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000'
 
+export default function SignIn() {
     const [error, setError] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
     const navigate = useNavigate()
 
     const insertUsers = (e) => {
@@ -15,7 +15,7 @@ export default function SignIn() {
 
         const user = { email, password }
 
-        fetch('http://localhost:4000/auth/signIn', {
+        fetch(`${API_URL}/auth/signIn`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user)
@@ -39,7 +39,6 @@ export default function SignIn() {
         })
     }
 
-    // DEMO LOGIN 
     const loginDemo = (role) => {
         setError('')
 
@@ -58,7 +57,6 @@ export default function SignIn() {
         <div className="container min-vh-100 d-flex justify-content-center align-items-center">
             <div className="row w-100 justify-content-center">
 
-                {/* SIGN IN */}
                 <div className="col-md-6 mb-3 mb-md-0">
                     <div className="card p-4 shadow-sm">
                         <div className="text-center mb-3">
@@ -100,7 +98,6 @@ export default function SignIn() {
                     </div>
                 </div>
 
-                {/* DEMO ACCOUNTS */}
                 <div className="col-md-4">
                     <div className="card p-4 shadow-sm h-100">
                         <h6 className="mb-2">Demo access</h6>

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 export default function UpdateAppointment() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // =========================
-  // STATE
-  // =========================
   const [formData, setFormData] = useState({
     professional: "",
     date: "",
@@ -18,10 +17,6 @@ export default function UpdateAppointment() {
   const [error, setError] = useState("");
 
   const today = new Date().toISOString().split("T")[0];
-
-  // =========================
-  // AUTH HEADERS
-  // =========================
   const token = localStorage.getItem("token");
 
   const authHeaders = {
@@ -29,9 +24,6 @@ export default function UpdateAppointment() {
     Authorization: `Bearer ${token}`
   };
 
-  // =========================
-  // HANDLERS
-  // =========================
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -40,14 +32,11 @@ export default function UpdateAppointment() {
     }));
   };
 
-  // =========================
-  // FETCH APPOINTMENT
-  // =========================
   useEffect(() => {
     const fetchAppointment = async () => {
       try {
         const res = await fetch(
-          `http://localhost:4000/appointments/${id}`,
+          `${API_URL}/appointments/${id}`,
           {
             method: "GET",
             headers: authHeaders
@@ -74,15 +63,12 @@ export default function UpdateAppointment() {
     fetchAppointment();
   }, [id]);
 
-  // =========================
-  // UPDATE APPOINTMENT
-  // =========================
   const updateAppointment = async (e) => {
     e.preventDefault();
 
     try {
       const response = await fetch(
-        `http://localhost:4000/appointments/${id}`,
+        `${API_URL}/appointments/${id}`,
         {
           method: "PUT",
           headers: authHeaders,
@@ -107,9 +93,6 @@ export default function UpdateAppointment() {
     }
   };
 
-  // =========================
-  // RENDER
-  // =========================
   return (
     <div className="container py-4">
       <div className="row justify-content-center">
@@ -119,7 +102,6 @@ export default function UpdateAppointment() {
               <h4 className="card-title mb-4">Update Appointment</h4>
 
               <form onSubmit={updateAppointment} className="row g-3">
-                {/* PROFESSIONAL */}
                 <div className="col-12">
                   <label className="form-label">Professional</label>
                   <select
@@ -136,7 +118,6 @@ export default function UpdateAppointment() {
                   </select>
                 </div>
 
-                {/* DATE */}
                 <div className="col-md-6">
                   <label className="form-label">Date</label>
                   <input
@@ -150,7 +131,6 @@ export default function UpdateAppointment() {
                   />
                 </div>
 
-                {/* TIME */}
                 <div className="col-md-6">
                   <label className="form-label">Time</label>
                   <select
@@ -167,7 +147,6 @@ export default function UpdateAppointment() {
                   </select>
                 </div>
 
-                {/* MESSAGE */}
                 <div className="col-12">
                   <label className="form-label">Message</label>
                   <textarea
@@ -178,14 +157,12 @@ export default function UpdateAppointment() {
                   />
                 </div>
 
-                {/* ERROR */}
                 {error && (
                   <div className="col-12">
                     <div className="alert alert-danger mb-0">{error}</div>
                   </div>
                 )}
 
-                {/* ACTIONS */}
                 <div className="col-12 d-flex justify-content-end gap-2">
                   <button
                     type="button"
