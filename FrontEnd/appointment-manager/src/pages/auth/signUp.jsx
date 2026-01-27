@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000'
+import API_URL from '../../config';
 
 export default function SignUp(){
     const [ error, setError] = useState('')

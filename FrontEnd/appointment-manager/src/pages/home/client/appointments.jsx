@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "../../../styles/appointments.css";
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+import API_URL from '../../../config';
 
 export default function Appointments() {
   const [appointments, setAppointments] = useState([]);

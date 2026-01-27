@@ -6,8 +6,7 @@ import {
   getRoleFromToken,
   logout
 } from "../../utils/auth";
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+import API_URL from '../../config';
 
 export default function Profile() {
   const [user, setUser] = useState({});

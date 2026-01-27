@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import API_URL from '../../config';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 
 export default function Dashboard() {
   const [appointments, setAppointments] = useState([]);

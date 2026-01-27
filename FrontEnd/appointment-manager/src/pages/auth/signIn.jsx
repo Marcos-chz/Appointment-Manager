@@ -1,8 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { jwtDecode } from "jwt-decode"
+import API_URL from '../../config';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000'
 
 export default function SignIn() {
     const [error, setError] = useState('')
