@@ -7,16 +7,42 @@ const multer = require("multer");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Configuración CORS mejorada
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://appointment-manager.vercel.app" // tu frontend real
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  origin: function (origin, callback) {
+    // Permite todos los subdominios de vercel.app y localhost
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "https://appointment-manager.vercel.app",
+      /\.vercel\.app$/  // ← Permite CUALQUIER dominio que termine en .vercel.app
+    ];
+    
+    // Para pruebas o desarrollo, permite solicitudes sin origin (Postman, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (
+      allowedOrigins.some(allowed => 
+        typeof allowed === 'string' 
+          ? origin === allowed 
+          : allowed.test(origin)
+      )
+    ) {
+      callback(null, true);
+    } else {
+      console.log('CORS bloqueado para origen:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  credentials: true,
+  exposedHeaders: ["Content-Length", "X-Foo", "X-Bar"],
+  maxAge: 86400 // 24 horas para preflight cache
 }));
 
-
+// Manejador para preflight requests (OPTIONS)
+app.options('*', cors());
 
 app.use(express.json());
 
@@ -25,12 +51,9 @@ app.use(
   express.static(path.join(__dirname, "uploads"))
 );
 
-
 app.get("/", (req, res) => {
-  res.status(200).json({ status: "API running" });
+  res.status(200).json({ status: "API running", cors: "enabled" });
 });
-
-
 
 const storage = multer.diskStorage({
   destination: "uploads/avatars",
@@ -40,8 +63,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
-
 
 const appointmentRouter = require('./routes/appointment');
 const userRouter = require('./routes/user')
@@ -56,7 +77,8 @@ app.use('/availability', availabilityRouter)
 app.use('/pages', pagesController)
 
 app.listen(PORT, () => {
-  console.log('Server running at ' + PORT);
+  console.log(`Server running at port ${PORT}`);
+  console.log('CORS configurado para: localhost, vercel.app y todos los subdominios de Vercel');
 });
 
 module.exports = upload;
