@@ -26,7 +26,7 @@ router.get(
 
 
 router.get(
-  '/:professionalid/:date',
+  '/:professionalId/:date',
   authenticate,
   authorizeRoles('client', 'professional'),
   getAvailableSlots
