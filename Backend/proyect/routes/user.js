@@ -10,13 +10,6 @@ const {
 
 const { authenticate, authorizeRoles } = require('../middlewares/auth');
 
-/*
-|--------------------------------------------------------------------------
-| USER ROUTES
-|--------------------------------------------------------------------------
-*/
-
-
 router.get(
   '/',
   authenticate,

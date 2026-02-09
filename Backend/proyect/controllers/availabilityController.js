@@ -29,7 +29,6 @@ const getAvailableSlots = async (req, res) => {
   const { professionalId, date } = req.params;
 
   try {
-    // Obtener todas las franjas de disponibilidad del profesional para ese día
     const availability = await pool.query(
       `SELECT start_time, end_time
        FROM availability
@@ -43,7 +42,6 @@ const getAvailableSlots = async (req, res) => {
 
     if (availability.rows.length === 0) return res.json([]);
 
-    // Obtener los turnos ya reservados
     const appointments = await pool.query(
       `SELECT time 
        FROM appointments 
@@ -53,7 +51,7 @@ const getAvailableSlots = async (req, res) => {
     );
     const reservedTimes = appointments.rows.map(r => r.time);
 
-    const SLOT_DURATION = 60; // Duración de cada slot en minutos
+    const SLOT_DURATION = 60; 
     const slots = [];
 
     availability.rows.forEach(({ start_time, end_time }) => {
@@ -64,10 +62,8 @@ const getAvailableSlots = async (req, res) => {
         const nextH = h + Math.floor((m + SLOT_DURATION) / 60);
         const nextM = (m + SLOT_DURATION) % 60;
 
-        // Crear string de la hora actual
         const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 
-        // Solo agregar si no está reservado y no excede la franja
         if (!reservedTimes.includes(timeStr)) {
           slots.push(timeStr);
         }

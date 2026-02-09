@@ -12,11 +12,9 @@ async function initializeDatabase() {
   });
 
   try {
-    // Leer tu SQL completo
     const sqlPath = path.join(__dirname, 'database.sql');
     const sql = await fs.readFile(sqlPath, 'utf8');
     
-    // Ejecutar todo el SQL
     await pool.query(sql);
     
     console.log('Database initialized successfully');
@@ -26,7 +24,6 @@ async function initializeDatabase() {
   } catch (error) {
     console.error('Database initialization error:', error.message);
     
-    // Si las tablas ya existen, es normal
     if (error.message.includes('already exists')) {
       console.log('Tables already exist, skipping initialization');
     } else {
@@ -38,7 +35,7 @@ async function initializeDatabase() {
   }
 }
 
-// Solo ejecutar si es el script principal
+
 if (require.main === module) {
   initializeDatabase();
 }

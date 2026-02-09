@@ -172,19 +172,6 @@ const updateAppointmentsStatus = async () => {
 };
 
 
-
-// const createTable = async (req, res) =>{
-//     try{
-//         const result = await pool.query(createTableAppointment)
-//         console.log('tabla creada')
-//     }
-//     catch(err){
-//         console.log(err)
-//     }
-// }
-
-// createTable()
-
 module.exports = {
   newAppointment,
   getAppointment,

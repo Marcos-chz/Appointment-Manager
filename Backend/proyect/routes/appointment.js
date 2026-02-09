@@ -57,7 +57,7 @@ router.put(
   changeStatus
 );
 
-// SHARED (client o professional)
+// SHARED 
 router.get(
   '/:id',
   authenticate,
